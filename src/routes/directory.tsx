@@ -10,6 +10,7 @@ const schema = z.object({
   category: fallback(z.string(), "").default(""),
   city: fallback(z.string(), "").default(""),
 });
+type SearchState = z.infer<typeof schema>;
 
 export const Route = createFileRoute("/directory")({
   validateSearch: zodValidator(schema),
