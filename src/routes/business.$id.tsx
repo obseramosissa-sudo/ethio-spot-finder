@@ -64,7 +64,7 @@ function BusinessPage() {
             <p className="mt-6 text-base leading-relaxed">{b.description}</p>
 
             <div className="mt-6 flex flex-wrap gap-2">
-              {b.tags.map((t) => (
+              {b.tags.map((t: string) => (
                 <span key={t} className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">{t}</span>
               ))}
             </div>
