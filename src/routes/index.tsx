@@ -1,24 +1,189 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Search, MapPin, Star, ArrowRight, TrendingUp, Shield, Compass } from "lucide-react";
+import { useState } from "react";
+import heroImg from "@/assets/hero.jpg";
+import { businesses, categories } from "@/data/businesses";
+import { BusinessCard } from "@/components/business-card";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Ethio Spot — Discover Ethiopian businesses on the map" },
+      {
+        name: "description",
+        content:
+          "Find restaurants, cafés, shops, spas and services near you. Ethio Spot maps the best Ethiopian businesses in one place.",
+      },
+      { property: "og:title", content: "Ethio Spot — Discover Ethiopian businesses" },
+      {
+        property: "og:description",
+        content: "Find, locate and visit trusted Ethiopian businesses.",
+      },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const [q, setQ] = useState("");
+  const navigate = useNavigate();
+  const featured = businesses.filter((b) => b.featured);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div>
+      {/* HERO */}
+      <section className="relative overflow-hidden">
+        <img
+          src={heroImg}
+          alt="Ethiopian city street with green hills"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-hero-gradient" />
+        <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white backdrop-blur">
+              <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+              Ethiopia's business finder
+            </div>
+            <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
+              Find every great <span className="text-gold">Ethiopian business</span>
+              <br className="hidden sm:block" /> right on the map.
+            </h1>
+            <p className="mt-5 max-w-xl text-base text-white/85 sm:text-lg">
+              From Tomoca coffee to Yod Abyssinia — Ethio Spot helps you discover,
+              locate and visit the places you'll love, in seconds.
+            </p>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                navigate({ to: "/search", search: { q } });
+              }}
+              className="mt-8 flex flex-col gap-2 rounded-2xl bg-white p-2 shadow-brand sm:flex-row sm:items-center"
+            >
+              <div className="flex flex-1 items-center gap-2 rounded-xl px-3">
+                <Search className="h-5 w-5 text-muted-foreground" />
+                <input
+                  value={q}
+                  onChange={(e) => setQ(e.target.value)}
+                  placeholder="Try 'coffee', 'injera', 'spa in Bole'…"
+                  className="w-full bg-transparent py-3 text-sm text-foreground outline-none placeholder:text-muted-foreground"
+                />
+              </div>
+              <button
+                type="submit"
+                className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-brand-gradient px-5 py-3 text-sm font-semibold text-brand-foreground shadow-brand"
+              >
+                Search <ArrowRight className="h-4 w-4" />
+              </button>
+            </form>
+
+            <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/80">
+              <span className="flex items-center gap-1.5"><Star className="h-4 w-4 fill-gold text-gold" /> 4.8 avg rating</span>
+              <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-gold" /> 500+ places mapped</span>
+              <span className="flex items-center gap-1.5"><Shield className="h-4 w-4 text-gold" /> Verified owners</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CATEGORIES */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">Browse</div>
+            <h2 className="mt-1 font-display text-3xl font-bold sm:text-4xl">Explore by category</h2>
+          </div>
+          <Link to="/categories" className="hidden text-sm font-semibold text-brand hover:underline sm:inline">
+            View all →
+          </Link>
+        </div>
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          {categories.map((c) => (
+            <Link
+              key={c.slug}
+              to="/directory"
+              search={{ category: c.slug, city: "", q: "" }}
+              className="group flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-soft transition hover:border-brand hover:shadow-brand"
+            >
+              <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gold-gradient text-xl">
+                {c.icon}
+              </div>
+              <div className="min-w-0">
+                <div className="truncate font-semibold">{c.name}</div>
+                <div className="text-xs text-muted-foreground">{c.count} places</div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* FEATURED */}
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">Handpicked</div>
+            <h2 className="mt-1 font-display text-3xl font-bold sm:text-4xl">Featured this week</h2>
+          </div>
+          <Link to="/directory" className="hidden text-sm font-semibold text-brand hover:underline sm:inline">
+            All businesses →
+          </Link>
+        </div>
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {featured.map((b) => (
+            <BusinessCard key={b.id} b={b} />
+          ))}
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section className="mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="overflow-hidden rounded-3xl bg-brand-gradient p-8 text-brand-foreground shadow-brand sm:p-12">
+          <div className="grid gap-10 md:grid-cols-2 md:items-center">
+            <div>
+              <div className="inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em]">
+                For owners
+              </div>
+              <h3 className="mt-4 font-display text-3xl font-bold sm:text-4xl">
+                Put your business on the map.
+              </h3>
+              <p className="mt-3 max-w-md text-white/90">
+                Free listing, verified badge, and analytics on who's viewing your spot.
+                Reach thousands of locals and travelers every week.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link
+                  to="/register"
+                  className="rounded-full bg-gold-gradient px-5 py-3 text-sm font-semibold text-gold-foreground shadow"
+                >
+                  List your business
+                </Link>
+                <Link
+                  to="/login"
+                  className="rounded-full bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/25 hover:bg-white/20"
+                >
+                  Owner login
+                </Link>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:grid-cols-1 lg:grid-cols-3">
+              {[
+                { icon: TrendingUp, t: "Reach", d: "10k+ monthly visitors" },
+                { icon: Compass, t: "Discover", d: "Map + search built-in" },
+                { icon: Shield, t: "Trust", d: "Verified owner badge" },
+              ].map((f) => (
+                <div key={f.t} className="rounded-2xl bg-white/10 p-5 backdrop-blur">
+                  <f.icon className="h-6 w-6 text-gold" />
+                  <div className="mt-3 font-display text-lg font-bold">{f.t}</div>
+                  <div className="text-sm text-white/80">{f.d}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="h-8" />
     </div>
   );
 }
