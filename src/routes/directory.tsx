@@ -43,14 +43,14 @@ function Directory() {
           <Search className="h-4 w-4 text-muted-foreground" />
           <input
             value={q}
-            onChange={(e) => navigate({ search: (p: typeof schema._type) => ({ ...p, q: e.target.value }) })}
+            onChange={(e) => navigate({ search: (p: SearchState) => ({ ...p, q: e.target.value }) })}
             placeholder="Search businesses…"
             className="w-full bg-transparent py-2.5 text-sm outline-none"
           />
         </div>
         <select
           value={category}
-          onChange={(e) => navigate({ search: (p: typeof schema._type) => ({ ...p, category: e.target.value }) })}
+          onChange={(e) => navigate({ search: (p: SearchState) => ({ ...p, category: e.target.value }) })}
           className="rounded-xl border border-border bg-background px-3 py-2.5 text-sm"
         >
           <option value="">All categories</option>
@@ -60,7 +60,7 @@ function Directory() {
         </select>
         <select
           value={city}
-          onChange={(e) => navigate({ search: (p: typeof schema._type) => ({ ...p, city: e.target.value }) })}
+          onChange={(e) => navigate({ search: (p: SearchState) => ({ ...p, city: e.target.value }) })}
           className="rounded-xl border border-border bg-background px-3 py-2.5 text-sm"
         >
           <option value="">All cities</option>
