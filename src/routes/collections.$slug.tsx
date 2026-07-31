@@ -51,7 +51,7 @@ function CollectionPage() {
       </div>
 
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((b) => (
+        {items.map((b: Business) => (
           <BusinessCard key={b.id} b={b} />
         ))}
       </div>
