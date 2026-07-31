@@ -1,28 +1,29 @@
 import { createFileRoute } from "@tanstack/react-router";
-import type {} from "@tanstack/react-start";
-
-const BASE_URL = "";
-
-const entries = [
-  { path: "/", changefreq: "weekly", priority: "1.0" },
-  { path: "/directory", changefreq: "daily", priority: "0.9" },
-  { path: "/categories", changefreq: "weekly", priority: "0.8" },
-  { path: "/map", changefreq: "weekly", priority: "0.8" },
-  { path: "/search", changefreq: "weekly", priority: "0.6" },
-  { path: "/register", changefreq: "monthly", priority: "0.6" },
-  { path: "/login", changefreq: "monthly", priority: "0.4" },
-];
+import { businesses, collections } from "@/data/businesses";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
-      GET: async () => {
+      GET: async ({ request }) => {
+        const baseUrl = new URL(request.url).origin;
+        const entries = [
+          { path: "/", changefreq: "weekly", priority: "1.0" },
+          { path: "/directory", changefreq: "daily", priority: "0.9" },
+          { path: "/categories", changefreq: "weekly", priority: "0.8" },
+          { path: "/collections", changefreq: "weekly", priority: "0.8" },
+          { path: "/map", changefreq: "weekly", priority: "0.8" },
+          { path: "/search", changefreq: "weekly", priority: "0.6" },
+          { path: "/register", changefreq: "monthly", priority: "0.6" },
+          { path: "/login", changefreq: "monthly", priority: "0.4" },
+          ...collections.map((c) => ({ path: `/collections/${c.slug}`, changefreq: "monthly", priority: "0.7" })),
+          ...businesses.map((b) => ({ path: `/business/${b.id}`, changefreq: "weekly", priority: "0.7" })),
+        ];
         const xml = [
           `<?xml version="1.0" encoding="UTF-8"?>`,
           `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
           ...entries.map(
             (e) =>
-              `  <url><loc>${BASE_URL}${e.path}</loc><changefreq>${e.changefreq}</changefreq><priority>${e.priority}</priority></url>`,
+              `  <url><loc>${baseUrl}${e.path}</loc><changefreq>${e.changefreq}</changefreq><priority>${e.priority}</priority></url>`,
           ),
           `</urlset>`,
         ].join("\n");
