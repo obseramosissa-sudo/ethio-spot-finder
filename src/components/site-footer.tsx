@@ -23,6 +23,7 @@ export function SiteFooter() {
           <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
             <li><Link to="/directory" className="hover:text-foreground">Directory</Link></li>
             <li><Link to="/categories" className="hover:text-foreground">Categories</Link></li>
+            <li><Link to="/collections" className="hover:text-foreground">Collections</Link></li>
             <li><Link to="/map" className="hover:text-foreground">Map</Link></li>
             <li><Link to="/search" className="hover:text-foreground">Search</Link></li>
           </ul>
