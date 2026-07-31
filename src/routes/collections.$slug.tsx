@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Bookmark, ArrowLeft } from "lucide-react";
-import { getCollection, getCollectionBusinesses } from "@/data/businesses";
+import { getCollection, getCollectionBusinesses, type Business } from "@/data/businesses";
 import { BusinessCard } from "@/components/business-card";
 
 export const Route = createFileRoute("/collections/$slug")({
