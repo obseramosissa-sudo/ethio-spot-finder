@@ -14,7 +14,253 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      business_photos: {
+        Row: {
+          business_id: string
+          caption: string | null
+          created_at: string
+          id: string
+          is_primary: boolean
+          uploaded_by: string | null
+          url: string
+        }
+        Insert: {
+          business_id: string
+          caption?: string | null
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          uploaded_by?: string | null
+          url: string
+        }
+        Update: {
+          business_id?: string
+          caption?: string | null
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          uploaded_by?: string | null
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_photos_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      businesses: {
+        Row: {
+          address: string
+          category: string
+          category_slug: string
+          city: string
+          created_at: string
+          description: string
+          featured: boolean
+          hours: Json | null
+          id: string
+          image: string | null
+          languages: string[] | null
+          lat: number
+          lng: number
+          menu_items: Json | null
+          name: string
+          owner_id: string | null
+          payment_methods: string[] | null
+          phone: string | null
+          price_level: number
+          rating: number
+          reviews_count: number
+          services: string[] | null
+          slug: string
+          status: Database["public"]["Enums"]["business_status"]
+          tags: string[] | null
+          updated_at: string
+          verified: boolean
+          website: string | null
+        }
+        Insert: {
+          address: string
+          category: string
+          category_slug: string
+          city: string
+          created_at?: string
+          description: string
+          featured?: boolean
+          hours?: Json | null
+          id?: string
+          image?: string | null
+          languages?: string[] | null
+          lat: number
+          lng: number
+          menu_items?: Json | null
+          name: string
+          owner_id?: string | null
+          payment_methods?: string[] | null
+          phone?: string | null
+          price_level?: number
+          rating?: number
+          reviews_count?: number
+          services?: string[] | null
+          slug: string
+          status?: Database["public"]["Enums"]["business_status"]
+          tags?: string[] | null
+          updated_at?: string
+          verified?: boolean
+          website?: string | null
+        }
+        Update: {
+          address?: string
+          category?: string
+          category_slug?: string
+          city?: string
+          created_at?: string
+          description?: string
+          featured?: boolean
+          hours?: Json | null
+          id?: string
+          image?: string | null
+          languages?: string[] | null
+          lat?: number
+          lng?: number
+          menu_items?: Json | null
+          name?: string
+          owner_id?: string | null
+          payment_methods?: string[] | null
+          phone?: string | null
+          price_level?: number
+          rating?: number
+          reviews_count?: number
+          services?: string[] | null
+          slug?: string
+          status?: Database["public"]["Enums"]["business_status"]
+          tags?: string[] | null
+          updated_at?: string
+          verified?: boolean
+          website?: string | null
+        }
+        Relationships: []
+      }
+      collection_items: {
+        Row: {
+          business_id: string
+          collection_id: string
+          id: string
+          note: string | null
+          sort_order: number
+        }
+        Insert: {
+          business_id: string
+          collection_id: string
+          id?: string
+          note?: string | null
+          sort_order?: number
+        }
+        Update: {
+          business_id?: string
+          collection_id?: string
+          id?: string
+          note?: string | null
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collection_items_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "collection_items_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "collections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      collections: {
+        Row: {
+          cover_image: string | null
+          created_at: string
+          curated_by: string | null
+          description: string | null
+          id: string
+          is_featured: boolean
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          cover_image?: string | null
+          created_at?: string
+          curated_by?: string | null
+          description?: string | null
+          id?: string
+          is_featured?: boolean
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          cover_image?: string | null
+          created_at?: string
+          curated_by?: string | null
+          description?: string | null
+          id?: string
+          is_featured?: boolean
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          business_id: string
+          created_at: string
+          helpful_count: number
+          id: string
+          rating: number
+          text: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          helpful_count?: number
+          id?: string
+          rating: number
+          text?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          helpful_count?: number
+          id?: string
+          rating?: number
+          text?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +269,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      business_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +396,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      business_status: ["pending", "approved", "rejected"],
+    },
   },
 } as const
