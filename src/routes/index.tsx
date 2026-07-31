@@ -1,8 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Search, MapPin, Star, ArrowRight, TrendingUp, Shield, Compass } from "lucide-react";
+import { Search, MapPin, Star, ArrowRight, TrendingUp, Shield, Compass, Bookmark } from "lucide-react";
 import { useState } from "react";
 import heroImg from "@/assets/hero.jpg";
-import { businesses, categories } from "@/data/businesses";
+import { businesses, categories, collections } from "@/data/businesses";
 import { BusinessCard } from "@/components/business-card";
 
 export const Route = createFileRoute("/")({
