@@ -136,6 +136,43 @@ function Index() {
         </div>
       </section>
 
+      {/* COLLECTIONS */}
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">Curated</div>
+            <h2 className="mt-1 font-display text-3xl font-bold sm:text-4xl">Collections</h2>
+          </div>
+          <Link to="/collections" className="hidden text-sm font-semibold text-brand hover:underline sm:inline">
+            All collections →
+          </Link>
+        </div>
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {collections.filter((c) => c.featured).map((c) => (
+            <Link
+              key={c.id}
+              to="/collections/$slug"
+              params={{ slug: c.slug }}
+              className="group relative overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition hover:shadow-brand"
+            >
+              <div className="relative h-40">
+                <img src={c.coverImage} alt={c.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+                <div className="absolute bottom-3 left-3 right-3">
+                  <div className="flex items-center gap-1 text-xs font-semibold text-white">
+                    <Bookmark className="h-3.5 w-3.5" /> {c.businessIds.length} places
+                  </div>
+                </div>
+              </div>
+              <div className="p-4">
+                <div className="font-display text-base font-bold">{c.title}</div>
+                <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{c.description}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* HOW IT WORKS */}
       <section className="mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="overflow-hidden rounded-3xl bg-brand-gradient p-8 text-brand-foreground shadow-brand sm:p-12">
