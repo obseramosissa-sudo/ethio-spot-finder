@@ -1,6 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, X, MapPin } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import logoAsset from "@/assets/ethio-spot-logo.png.asset.json";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -17,17 +18,22 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-lg">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-brand-gradient shadow-brand">
-            <MapPin className="h-5 w-5 text-brand-foreground" strokeWidth={2.5} />
-          </div>
-          <div className="leading-tight">
-            <div className="font-display text-lg font-bold tracking-tight">Ethio Spot</div>
-            <div className="-mt-0.5 text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-              Find · Locate · Visit
+        <Link to="/" className="flex min-w-0 items-center gap-2">
+          <img
+            src={logoAsset.url}
+            alt="Ethio Spot logo"
+            className="h-9 w-auto shrink-0"
+          />
+          <div className="min-w-0 leading-tight">
+            <div className="truncate font-display text-lg font-bold tracking-tight">
+              Ethio <span className="text-brand">Spot</span>
+            </div>
+            <div className="-mt-0.5 truncate text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Find · Connect · Grow
             </div>
           </div>
         </Link>
+
 
         <nav className="hidden items-center gap-1 md:flex">
           {nav.map((n) => {

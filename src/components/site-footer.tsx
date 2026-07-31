@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { MapPin } from "lucide-react";
+import logoAsset from "@/assets/ethio-spot-logo.png.asset.json";
 
 export function SiteFooter() {
   return (
@@ -7,11 +7,12 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-4 lg:px-8">
         <div className="md:col-span-2">
           <div className="flex items-center gap-2">
-            <div className="grid h-9 w-9 place-items-center rounded-xl bg-brand-gradient shadow-brand">
-              <MapPin className="h-5 w-5 text-brand-foreground" strokeWidth={2.5} />
-            </div>
-            <span className="font-display text-lg font-bold">Ethio Spot</span>
+            <img src={logoAsset.url} alt="Ethio Spot logo" className="h-9 w-auto" />
+            <span className="font-display text-lg font-bold">
+              Ethio <span className="text-brand">Spot</span>
+            </span>
           </div>
+
           <p className="mt-3 max-w-sm text-sm text-muted-foreground">
             Discover Ethiopian businesses on the map — restaurants, cafés, shops, spas and more.
             Locate what you love in seconds.
