@@ -83,7 +83,7 @@ function BusinessPage() {
             <div className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">
               <h2 className="font-display text-xl font-bold">Opening hours</h2>
               <div className="mt-4 grid gap-2 text-sm">
-                {b.hours.map((h) => (
+                {b.hours.map((h: { day: string; time: string }) => (
                   <div key={h.day} className="flex items-center justify-between rounded-xl bg-secondary/40 px-4 py-2">
                     <span className="font-medium">{h.day}</span>
                     <span className={h.time === "Closed" ? "text-muted-foreground" : "text-foreground"}>{h.time}</span>
@@ -95,7 +95,7 @@ function BusinessPage() {
             <div className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">
               <h2 className="font-display text-xl font-bold">Menu & services</h2>
               <div className="mt-4 space-y-3">
-                {b.menuItems.map((m) => (
+                {b.menuItems.map((m: { name: string; price: string; note?: string }) => (
                   <div key={m.name} className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3">
                     <div>
                       <div className="font-medium">{m.name}</div>
@@ -106,7 +106,7 @@ function BusinessPage() {
                 ))}
               </div>
               <div className="mt-5 flex flex-wrap gap-2">
-                {b.services.map((s) => (
+                {b.services.map((s: string) => (
                   <span key={s} className="inline-flex items-center gap-1 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
                     <Utensils className="h-3 w-3" /> {s}
                   </span>
