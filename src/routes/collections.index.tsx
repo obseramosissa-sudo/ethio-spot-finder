@@ -38,13 +38,13 @@ function CollectionsIndex() {
               <img src={c.coverImage} alt={c.title} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
               <div className="absolute bottom-3 left-3 flex items-center gap-1 rounded-full bg-gold-gradient px-2.5 py-1 text-xs font-bold text-gold-foreground">
-                <Bookmark className="h-3.5 w-3.5" /> {c.items.length} places
+                <Bookmark className="h-3.5 w-3.5" /> {c.businessIds.length} places
               </div>
             </div>
             <div className="p-4">
               <h3 className="font-display text-lg font-bold">{c.title}</h3>
               <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{c.description}</p>
-              <p className="mt-3 text-xs text-muted-foreground">Curated by {c.curator}</p>
+              <p className="mt-3 text-xs text-muted-foreground">Curated by {c.curatedBy}</p>
             </div>
           </Link>
         ))}
