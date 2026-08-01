@@ -1,5 +1,14 @@
 import { businesses } from "./businesses";
 
+export type ViewSource = "search" | "collections" | "category" | "direct";
+
+export const viewSourceLabels: Record<ViewSource, string> = {
+  search: "Search",
+  collections: "Collections",
+  category: "Category pages",
+  direct: "Direct links",
+};
+
 export type ListingAnalytics = {
   businessId: string;
   views: number;
@@ -9,6 +18,7 @@ export type ListingAnalytics = {
   directions: number;
   calls: number;
   trend: number[];
+  sources: Record<ViewSource, number>;
   keywords: { term: string; count: number; position: number }[];
 };
 
