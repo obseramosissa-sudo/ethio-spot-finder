@@ -98,6 +98,20 @@ export function totals() {
   );
 }
 
+export const viewSources: ViewSource[] = ["search", "collections", "category", "direct"];
+
+export function sourceTotals(): Record<ViewSource, number> {
+  return listingAnalytics.reduce(
+    (acc, a) => {
+      for (const s of viewSources) acc[s] += a.sources[s];
+      return acc;
+    },
+    { search: 0, collections: 0, category: 0, direct: 0 } as Record<ViewSource, number>,
+  );
+}
+
+
+
 export function topKeywords(limit = 6) {
   const map = new Map<string, { term: string; count: number; position: number }>();
   for (const a of listingAnalytics) {
