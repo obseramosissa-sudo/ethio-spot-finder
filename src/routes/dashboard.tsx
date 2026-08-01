@@ -221,7 +221,18 @@ function Dashboard() {
         </section>
 
         <section className="lg:col-span-2">
-          <h2 className="font-display text-2xl font-bold">Top search keywords</h2>
+          <h2 className="font-display text-2xl font-bold">Views by source</h2>
+          <div className="mt-4 rounded-2xl border border-border bg-card p-5 shadow-soft">
+            <div className="text-sm text-muted-foreground">
+              {t.views.toLocaleString()} profile views across all listings
+            </div>
+            <div className="mt-4">
+              <SourceBreakdown sources={allSources} />
+            </div>
+          </div>
+
+          <h2 className="mt-10 font-display text-2xl font-bold">Top search keywords</h2>
+
           <div className="mt-4 rounded-2xl border border-border bg-card p-5 shadow-soft">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Search className="h-4 w-4" /> Across all your listings
