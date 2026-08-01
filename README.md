@@ -1,14 +1,90 @@
-# Welcome to your Lovable project
+# Ethio Spot Connect
+
+Build a professional responsive website for Ethio Spot.
+
+
+
+Requirements:
+
+
+
+Homepage
+
+
+
+Business Directory
+
+
+
+Map Page
+
+
+
+Categories
+
+
+
+Business Detail Page
+
+
+
+Search
+
+
+
+Owner Registration
+
+
+
+Login
+
+
+
+Dashboard
+
+
+
+Admin Dashboard
+
+
+
+Responsive Design
+
+
+
+Google Maps
+
+
+
+Supabase Database
+
+
+
+Modern UI
+
+
+
+SEO optimized
+
+
+
+Fast loading
+
+
+
+Green and Yellow branding.
 
 This project was built with [Lovable](https://lovable.dev).
 
+**Live app**: https://ethio-spot-finder.lovable.app
+
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/f2a843f6-d998-45ce-b010-47a1a32397e1).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +96,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
