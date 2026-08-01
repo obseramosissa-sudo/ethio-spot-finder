@@ -191,6 +191,16 @@ function Dashboard() {
 
                   <div className="mt-5 border-t border-border pt-4">
                     <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                      Where these views came from
+                    </div>
+                    <div className="mt-3">
+                      <SourceBreakdown sources={a.sources} />
+                    </div>
+                  </div>
+
+                  <div className="mt-5 border-t border-border pt-4">
+
+                    <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                       Search terms that led here
                     </div>
                     <ul className="mt-3 space-y-2">
