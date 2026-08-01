@@ -1,7 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Eye, Star, Bookmark, TrendingUp, Edit, Search, Phone } from "lucide-react";
 import { businesses } from "@/data/businesses";
-import { listingAnalytics, topKeywords, totals } from "@/data/analytics";
+import {
+  listingAnalytics,
+  sourceTotals,
+  topKeywords,
+  totals,
+  viewSourceLabels,
+  viewSources,
+  type ViewSource,
+} from "@/data/analytics";
+
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
