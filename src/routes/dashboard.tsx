@@ -58,10 +58,48 @@ function Change({ value }: { value: number }) {
   );
 }
 
+const sourceColor: Record<ViewSource, string> = {
+  search: "bg-brand",
+  collections: "bg-gold",
+  category: "bg-brand/50",
+  direct: "bg-muted-foreground/50",
+};
+
+function SourceBreakdown({ sources }: { sources: Record<ViewSource, number> }) {
+  const total = viewSources.reduce((a, s) => a + sources[s], 0) || 1;
+  return (
+    <div>
+      <div className="flex h-2.5 overflow-hidden rounded-full bg-secondary">
+        {viewSources.map((s) => (
+          <div
+            key={s}
+            className={sourceColor[s]}
+            style={{ width: `${(sources[s] / total) * 100}%` }}
+            title={`${viewSourceLabels[s]}: ${sources[s].toLocaleString()}`}
+          />
+        ))}
+      </div>
+      <ul className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+        {viewSources.map((s) => (
+          <li key={s} className="flex items-center gap-2">
+            <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${sourceColor[s]}`} />
+            <span className="truncate">{viewSourceLabels[s]}</span>
+            <span className="ml-auto shrink-0 text-xs text-muted-foreground">
+              {sources[s].toLocaleString()} · {Math.round((sources[s] / total) * 100)}%
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function Dashboard() {
   const t = totals();
   const keywords = topKeywords();
   const maxKeyword = Math.max(...keywords.map((k) => k.count), 1);
+  const allSources = sourceTotals();
+
 
   const stats = [
     { label: "Profile views", value: t.views.toLocaleString(), change: 18, icon: Eye },
