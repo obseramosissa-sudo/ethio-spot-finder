@@ -1,7 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Eye, Star, Bookmark, TrendingUp, Edit, Search, Phone } from "lucide-react";
 import { businesses } from "@/data/businesses";
-import { listingAnalytics, topKeywords, totals } from "@/data/analytics";
+import {
+  listingAnalytics,
+  sourceTotals,
+  topKeywords,
+  totals,
+  viewSourceLabels,
+  viewSources,
+  type ViewSource,
+} from "@/data/analytics";
+
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -49,10 +58,48 @@ function Change({ value }: { value: number }) {
   );
 }
 
+const sourceColor: Record<ViewSource, string> = {
+  search: "bg-brand",
+  collections: "bg-gold",
+  category: "bg-brand/50",
+  direct: "bg-muted-foreground/50",
+};
+
+function SourceBreakdown({ sources }: { sources: Record<ViewSource, number> }) {
+  const total = viewSources.reduce((a, s) => a + sources[s], 0) || 1;
+  return (
+    <div>
+      <div className="flex h-2.5 overflow-hidden rounded-full bg-secondary">
+        {viewSources.map((s) => (
+          <div
+            key={s}
+            className={sourceColor[s]}
+            style={{ width: `${(sources[s] / total) * 100}%` }}
+            title={`${viewSourceLabels[s]}: ${sources[s].toLocaleString()}`}
+          />
+        ))}
+      </div>
+      <ul className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+        {viewSources.map((s) => (
+          <li key={s} className="flex items-center gap-2">
+            <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${sourceColor[s]}`} />
+            <span className="truncate">{viewSourceLabels[s]}</span>
+            <span className="ml-auto shrink-0 text-xs text-muted-foreground">
+              {sources[s].toLocaleString()} · {Math.round((sources[s] / total) * 100)}%
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function Dashboard() {
   const t = totals();
   const keywords = topKeywords();
   const maxKeyword = Math.max(...keywords.map((k) => k.count), 1);
+  const allSources = sourceTotals();
+
 
   const stats = [
     { label: "Profile views", value: t.views.toLocaleString(), change: 18, icon: Eye },
@@ -144,6 +191,16 @@ function Dashboard() {
 
                   <div className="mt-5 border-t border-border pt-4">
                     <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                      Where these views came from
+                    </div>
+                    <div className="mt-3">
+                      <SourceBreakdown sources={a.sources} />
+                    </div>
+                  </div>
+
+                  <div className="mt-5 border-t border-border pt-4">
+
+                    <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                       Search terms that led here
                     </div>
                     <ul className="mt-3 space-y-2">
@@ -164,7 +221,18 @@ function Dashboard() {
         </section>
 
         <section className="lg:col-span-2">
-          <h2 className="font-display text-2xl font-bold">Top search keywords</h2>
+          <h2 className="font-display text-2xl font-bold">Views by source</h2>
+          <div className="mt-4 rounded-2xl border border-border bg-card p-5 shadow-soft">
+            <div className="text-sm text-muted-foreground">
+              {t.views.toLocaleString()} profile views across all listings
+            </div>
+            <div className="mt-4">
+              <SourceBreakdown sources={allSources} />
+            </div>
+          </div>
+
+          <h2 className="mt-10 font-display text-2xl font-bold">Top search keywords</h2>
+
           <div className="mt-4 rounded-2xl border border-border bg-card p-5 shadow-soft">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Search className="h-4 w-4" /> Across all your listings
