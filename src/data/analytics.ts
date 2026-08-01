@@ -48,8 +48,24 @@ const keywordPool = [
 
 export const listingAnalytics: ListingAnalytics[] = businesses.slice(0, 2).map((b, bi) => {
   const base = 600 + Math.round(seeded(b.id, 1) * 3200);
+  // Split total views across acquisition sources (weights sum to 1).
+  const rawWeights = [
+    0.9 + seeded(b.id, 71),
+    0.4 + seeded(b.id, 72) * 0.7,
+    0.3 + seeded(b.id, 73) * 0.6,
+    0.2 + seeded(b.id, 74) * 0.5,
+  ];
+  const weightSum = rawWeights.reduce((a, c) => a + c, 0);
+  const parts = rawWeights.map((w) => Math.round((w / weightSum) * base));
+  parts[0] += base - parts.reduce((a, c) => a + c, 0);
   return {
     businessId: b.id,
+    sources: {
+      search: parts[0],
+      collections: parts[1],
+      category: parts[2],
+      direct: parts[3],
+    },
     views: base,
     viewsChange: Math.round((seeded(b.id, 2) * 40 - 8) * 10) / 10,
     saves: 40 + Math.round(seeded(b.id, 3) * 260),
