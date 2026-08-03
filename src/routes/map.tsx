@@ -20,6 +20,8 @@ export const Route = createFileRoute("/map")({
 
 function MapPage() {
   const [cat, setCat] = useState<string>("");
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [activeId, setActiveId] = useState<string | null>(null);
   const filtered = cat ? businesses.filter((b) => b.categorySlug === cat) : businesses;
 
   return (
@@ -52,14 +54,40 @@ function MapPage() {
         <div className="h-[70vh] overflow-hidden rounded-3xl border border-border shadow-soft">
           <ClientOnly fallback={<div className="h-full w-full animate-pulse bg-muted" />}>
             <Suspense fallback={<div className="h-full w-full animate-pulse bg-muted" />}>
-              <MapPreview points={filtered} center={[9.01, 38.76]} zoom={12} />
+              <MapPreview
+                points={filtered}
+                center={[9.01, 38.76]}
+                zoom={12}
+                hoveredId={hoveredId}
+                activeId={activeId}
+                onMarkerHover={setHoveredId}
+                onMarkerSelect={setActiveId}
+              />
             </Suspense>
           </ClientOnly>
         </div>
         <div className="max-h-[70vh] space-y-3 overflow-y-auto pr-1">
-          {filtered.map((b) => <BusinessCard key={b.id} b={b} />)}
+          {filtered.map((b) => (
+            <div
+              key={b.id}
+              onMouseEnter={() => setHoveredId(b.id)}
+              onMouseLeave={() => setHoveredId((id) => (id === b.id ? null : id))}
+              onFocusCapture={() => setHoveredId(b.id)}
+              onClick={() => setActiveId(b.id)}
+              className={`rounded-2xl transition duration-300 ${
+                activeId === b.id
+                  ? "ring-2 ring-brand ring-offset-2 ring-offset-background"
+                  : hoveredId === b.id
+                    ? "ring-1 ring-brand/50"
+                    : "ring-0"
+              }`}
+            >
+              <BusinessCard b={b} />
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
 }
+
