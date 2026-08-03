@@ -38,20 +38,26 @@ function Index() {
         <img
           src={heroImg}
           alt="Ethiopian city street with green hills"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full animate-slow-zoom object-cover"
         />
         <div className="absolute inset-0 bg-hero-gradient" />
         <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white backdrop-blur">
-              <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+            <div className="inline-flex animate-fade-up items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white backdrop-blur">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold" />
               Ethiopia's business finder
             </div>
-            <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
+            <h1
+              className="mt-5 animate-fade-up font-display text-4xl font-extrabold leading-[1.05] text-white sm:text-5xl lg:text-6xl"
+              style={{ animationDelay: "90ms" }}
+            >
               Find every great <span className="text-gold">Ethiopian business</span>
               <br className="hidden sm:block" /> right on the map.
             </h1>
-            <p className="mt-5 max-w-xl text-base text-white/85 sm:text-lg">
+            <p
+              className="mt-5 max-w-xl animate-fade-up text-base text-white/85 sm:text-lg"
+              style={{ animationDelay: "180ms" }}
+            >
               From Tomoca coffee to Yod Abyssinia — Ethio Spot helps you discover,
               locate and visit the places you'll love, in seconds.
             </p>
@@ -61,7 +67,8 @@ function Index() {
                 e.preventDefault();
                 navigate({ to: "/search", search: { q } });
               }}
-              className="mt-8 flex flex-col gap-2 rounded-2xl bg-white p-2 shadow-brand sm:flex-row sm:items-center"
+              style={{ animationDelay: "270ms" }}
+              className="mt-8 flex animate-fade-up flex-col gap-2 rounded-2xl bg-white p-2 shadow-brand transition-shadow duration-300 focus-within:shadow-[0_25px_60px_-20px_rgb(15_122_58/0.6)] sm:flex-row sm:items-center"
             >
               <div className="flex flex-1 items-center gap-2 rounded-xl px-3">
                 <Search className="h-5 w-5 text-muted-foreground" />
@@ -74,17 +81,22 @@ function Index() {
               </div>
               <button
                 type="submit"
-                className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-brand-gradient px-5 py-3 text-sm font-semibold text-brand-foreground shadow-brand"
+                className="group inline-flex items-center justify-center gap-1.5 rounded-xl bg-brand-gradient px-5 py-3 text-sm font-semibold text-brand-foreground shadow-brand transition duration-300 hover:scale-[1.03] active:scale-95"
               >
-                Search <ArrowRight className="h-4 w-4" />
+                Search{" "}
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             </form>
 
-            <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/80">
+            <div
+              className="mt-5 flex animate-fade-up flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/80"
+              style={{ animationDelay: "360ms" }}
+            >
               <span className="flex items-center gap-1.5"><Star className="h-4 w-4 fill-gold text-gold" /> 4.8 avg rating</span>
               <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-gold" /> 500+ places mapped</span>
               <span className="flex items-center gap-1.5"><Shield className="h-4 w-4 text-gold" /> Verified owners</span>
             </div>
+
           </div>
         </div>
       </section>
