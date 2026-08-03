@@ -4,6 +4,8 @@ import { useState } from "react";
 import heroImg from "@/assets/hero.jpg";
 import { businesses, categories, collections } from "@/data/businesses";
 import { BusinessCard } from "@/components/business-card";
+import { Reveal } from "@/components/reveal";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
