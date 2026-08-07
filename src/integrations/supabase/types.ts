@@ -220,6 +220,118 @@ export type Database = {
         }
         Relationships: []
       }
+      job_posts: {
+        Row: {
+          apply_contact: string | null
+          business_id: string
+          closes_at: string | null
+          created_at: string
+          currency: string
+          description: string
+          employment_type: Database["public"]["Enums"]["job_type"]
+          id: string
+          is_open: boolean
+          location: string | null
+          salary_max: number | null
+          salary_min: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          apply_contact?: string | null
+          business_id: string
+          closes_at?: string | null
+          created_at?: string
+          currency?: string
+          description: string
+          employment_type?: Database["public"]["Enums"]["job_type"]
+          id?: string
+          is_open?: boolean
+          location?: string | null
+          salary_max?: number | null
+          salary_min?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          apply_contact?: string | null
+          business_id?: string
+          closes_at?: string | null
+          created_at?: string
+          currency?: string
+          description?: string
+          employment_type?: Database["public"]["Enums"]["job_type"]
+          id?: string
+          is_open?: boolean
+          location?: string | null
+          salary_max?: number | null
+          salary_min?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_posts_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          business_id: string
+          category: string | null
+          created_at: string
+          currency: string
+          description: string | null
+          id: string
+          image: string | null
+          is_available: boolean
+          name: string
+          price: number
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          business_id: string
+          category?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          image?: string | null
+          is_available?: boolean
+          name: string
+          price?: number
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          business_id?: string
+          category?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          image?: string | null
+          is_available?: boolean
+          name?: string
+          price?: number
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reviews: {
         Row: {
           business_id: string
@@ -270,6 +382,12 @@ export type Database = {
     }
     Enums: {
       business_status: "pending" | "approved" | "rejected"
+      job_type:
+        | "full_time"
+        | "part_time"
+        | "contract"
+        | "internship"
+        | "temporary"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -398,6 +516,13 @@ export const Constants = {
   public: {
     Enums: {
       business_status: ["pending", "approved", "rejected"],
+      job_type: [
+        "full_time",
+        "part_time",
+        "contract",
+        "internship",
+        "temporary",
+      ],
     },
   },
 } as const
