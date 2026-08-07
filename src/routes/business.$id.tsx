@@ -1,19 +1,40 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { MapPin, Star, Phone, Globe, Clock, BadgeCheck, ArrowLeft, Wallet, Languages, Utensils, Sparkles, MessageSquare } from "lucide-react";
+import { MapPin, Star, Phone, Globe, Clock, BadgeCheck, ArrowLeft, Wallet, Languages, Utensils, Sparkles, MessageSquare, ShoppingBag, Briefcase } from "lucide-react";
 import { lazy, Suspense } from "react";
 import { getBusiness, businesses, getBusinessReviews } from "@/data/businesses";
 import { BusinessCard } from "@/components/business-card";
 import { ReviewList } from "@/components/reviews";
 import { BusinessPhotos } from "@/components/business-photos";
+import { BusinessStore } from "@/components/business-store";
+import { BusinessJobs } from "@/components/business-jobs";
+import { getBusinessStorefront } from "@/lib/storefront.functions";
 
 const MapPreview = lazy(() => import("@/components/map-preview"));
 
 export const Route = createFileRoute("/business/$id")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const b = getBusiness(params.id);
     if (!b) throw notFound();
-    return { business: b, reviews: getBusinessReviews(params.id) };
+    const storefront = await getBusinessStorefront({ data: { slug: params.id } }).catch(() => ({
+      products: [],
+      jobs: [],
+    }));
+    return { business: b, reviews: getBusinessReviews(params.id), storefront };
   },
+  errorComponent: ({ error }) => (
+    <div role="alert" className="mx-auto max-w-3xl px-4 py-24 text-center">
+      <h1 className="font-display text-2xl font-bold">Something went wrong</h1>
+      <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
+    </div>
+  ),
+  notFoundComponent: () => (
+    <div className="mx-auto max-w-3xl px-4 py-24 text-center">
+      <h1 className="font-display text-2xl font-bold">Business not found</h1>
+      <Link to="/directory" search={{ q: "", category: "", city: "" }} className="mt-3 inline-block text-sm font-semibold text-brand">
+        Back to directory
+      </Link>
+    </div>
+  ),
   head: ({ loaderData }) => {
     if (!loaderData) {
       return { meta: [{ title: "Not found — Ethio Spot" }, { name: "robots", content: "noindex" }] };
@@ -25,14 +46,17 @@ export const Route = createFileRoute("/business/$id")({
         { name: "description", content: b.description },
         { property: "og:title", content: `${b.name} — Ethio Spot` },
         { property: "og:description", content: b.description },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
       ],
     };
   },
   component: BusinessPage,
 });
 
+
 function BusinessPage() {
-  const { business: b, reviews } = Route.useLoaderData();
+  const { business: b, reviews, storefront } = Route.useLoaderData();
   const related = businesses.filter((x) => x.categorySlug === b.categorySlug && x.id !== b.id).slice(0, 3);
 
   return (
@@ -93,17 +117,15 @@ function BusinessPage() {
             </div>
 
             <div className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">
-              <h2 className="font-display text-xl font-bold">Menu & services</h2>
-              <div className="mt-4 space-y-3">
-                {b.menuItems.map((m: { name: string; price: string; note?: string }) => (
-                  <div key={m.name} className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3">
-                    <div>
-                      <div className="font-medium">{m.name}</div>
-                      {m.note && <div className="text-xs text-muted-foreground">{m.note}</div>}
-                    </div>
-                    <div className="font-semibold text-brand">{m.price}</div>
-                  </div>
-                ))}
+              <div className="flex items-center gap-2">
+                <ShoppingBag className="h-5 w-5 text-brand" />
+                <h2 className="font-display text-xl font-bold">Shop & services</h2>
+              </div>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Items and treatments {b.name} offers — call or message to order.
+              </p>
+              <div className="mt-5">
+                <BusinessStore products={storefront.products} businessName={b.name} phone={b.phone} />
               </div>
               <div className="mt-5 flex flex-wrap gap-2">
                 {b.services.map((s: string) => (
@@ -113,6 +135,20 @@ function BusinessPage() {
                 ))}
               </div>
             </div>
+
+            <div className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">
+              <div className="flex items-center gap-2">
+                <Briefcase className="h-5 w-5 text-brand" />
+                <h2 className="font-display text-xl font-bold">Jobs at {b.name}</h2>
+              </div>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Open positions posted by this business.
+              </p>
+              <div className="mt-5">
+                <BusinessJobs jobs={storefront.jobs} businessName={b.name} />
+              </div>
+            </div>
+
 
             <div className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">
               <div className="flex items-center gap-2">
