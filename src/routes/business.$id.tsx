@@ -117,17 +117,15 @@ function BusinessPage() {
             </div>
 
             <div className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">
-              <h2 className="font-display text-xl font-bold">Menu & services</h2>
-              <div className="mt-4 space-y-3">
-                {b.menuItems.map((m: { name: string; price: string; note?: string }) => (
-                  <div key={m.name} className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3">
-                    <div>
-                      <div className="font-medium">{m.name}</div>
-                      {m.note && <div className="text-xs text-muted-foreground">{m.note}</div>}
-                    </div>
-                    <div className="font-semibold text-brand">{m.price}</div>
-                  </div>
-                ))}
+              <div className="flex items-center gap-2">
+                <ShoppingBag className="h-5 w-5 text-brand" />
+                <h2 className="font-display text-xl font-bold">Shop & services</h2>
+              </div>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Items and treatments {b.name} offers — call or message to order.
+              </p>
+              <div className="mt-5">
+                <BusinessStore products={storefront.products} businessName={b.name} phone={b.phone} />
               </div>
               <div className="mt-5 flex flex-wrap gap-2">
                 {b.services.map((s: string) => (
@@ -137,6 +135,20 @@ function BusinessPage() {
                 ))}
               </div>
             </div>
+
+            <div className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">
+              <div className="flex items-center gap-2">
+                <Briefcase className="h-5 w-5 text-brand" />
+                <h2 className="font-display text-xl font-bold">Jobs at {b.name}</h2>
+              </div>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Open positions posted by this business.
+              </p>
+              <div className="mt-5">
+                <BusinessJobs jobs={storefront.jobs} businessName={b.name} />
+              </div>
+            </div>
+
 
             <div className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">
               <div className="flex items-center gap-2">
