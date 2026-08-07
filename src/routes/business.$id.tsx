@@ -56,7 +56,7 @@ export const Route = createFileRoute("/business/$id")({
 
 
 function BusinessPage() {
-  const { business: b, reviews } = Route.useLoaderData();
+  const { business: b, reviews, storefront } = Route.useLoaderData();
   const related = businesses.filter((x) => x.categorySlug === b.categorySlug && x.id !== b.id).slice(0, 3);
 
   return (
