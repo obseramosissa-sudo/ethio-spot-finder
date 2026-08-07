@@ -1,19 +1,40 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { MapPin, Star, Phone, Globe, Clock, BadgeCheck, ArrowLeft, Wallet, Languages, Utensils, Sparkles, MessageSquare } from "lucide-react";
+import { MapPin, Star, Phone, Globe, Clock, BadgeCheck, ArrowLeft, Wallet, Languages, Utensils, Sparkles, MessageSquare, ShoppingBag, Briefcase } from "lucide-react";
 import { lazy, Suspense } from "react";
 import { getBusiness, businesses, getBusinessReviews } from "@/data/businesses";
 import { BusinessCard } from "@/components/business-card";
 import { ReviewList } from "@/components/reviews";
 import { BusinessPhotos } from "@/components/business-photos";
+import { BusinessStore } from "@/components/business-store";
+import { BusinessJobs } from "@/components/business-jobs";
+import { getBusinessStorefront } from "@/lib/storefront.functions";
 
 const MapPreview = lazy(() => import("@/components/map-preview"));
 
 export const Route = createFileRoute("/business/$id")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const b = getBusiness(params.id);
     if (!b) throw notFound();
-    return { business: b, reviews: getBusinessReviews(params.id) };
+    const storefront = await getBusinessStorefront({ data: { slug: params.id } }).catch(() => ({
+      products: [],
+      jobs: [],
+    }));
+    return { business: b, reviews: getBusinessReviews(params.id), storefront };
   },
+  errorComponent: ({ error }) => (
+    <div role="alert" className="mx-auto max-w-3xl px-4 py-24 text-center">
+      <h1 className="font-display text-2xl font-bold">Something went wrong</h1>
+      <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
+    </div>
+  ),
+  notFoundComponent: () => (
+    <div className="mx-auto max-w-3xl px-4 py-24 text-center">
+      <h1 className="font-display text-2xl font-bold">Business not found</h1>
+      <Link to="/directory" search={{ q: "", category: "", city: "" }} className="mt-3 inline-block text-sm font-semibold text-brand">
+        Back to directory
+      </Link>
+    </div>
+  ),
   head: ({ loaderData }) => {
     if (!loaderData) {
       return { meta: [{ title: "Not found — Ethio Spot" }, { name: "robots", content: "noindex" }] };
@@ -25,11 +46,14 @@ export const Route = createFileRoute("/business/$id")({
         { name: "description", content: b.description },
         { property: "og:title", content: `${b.name} — Ethio Spot` },
         { property: "og:description", content: b.description },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
       ],
     };
   },
   component: BusinessPage,
 });
+
 
 function BusinessPage() {
   const { business: b, reviews } = Route.useLoaderData();
