@@ -1,0 +1,8 @@
+{
+  "compatibility_date": "2026-08-21",
+  "pages_build_output_dir": "..",
+  "name": "tanstack-start-ts",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
