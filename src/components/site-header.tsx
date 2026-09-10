@@ -71,18 +71,43 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Link
-            to="/login"
-            className="rounded-full px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary"
-          >
-            Log in
-          </Link>
-          <Link
-            to="/register"
-            className="rounded-full bg-brand-gradient px-4 py-2 text-sm font-semibold text-brand-foreground shadow-brand transition hover:opacity-95"
-          >
-            List your business
-          </Link>
+          {loading ? (
+            <div className="h-9 w-40 animate-pulse rounded-full bg-secondary" />
+          ) : user ? (
+            <>
+              <span className="max-w-[10rem] truncate text-sm text-muted-foreground">
+                {user.email}
+              </span>
+              <Link
+                to="/dashboard"
+                className="flex items-center gap-1.5 rounded-full bg-brand-gradient px-4 py-2 text-sm font-semibold text-brand-foreground shadow-brand transition hover:opacity-95"
+              >
+                <LayoutDashboard className="h-4 w-4" /> Dashboard
+              </Link>
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+              >
+                <LogOut className="h-4 w-4" /> Sign out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/auth"
+                className="rounded-full px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary"
+              >
+                Log in
+              </Link>
+              <Link
+                to="/register"
+                className="rounded-full bg-brand-gradient px-4 py-2 text-sm font-semibold text-brand-foreground shadow-brand transition hover:opacity-95"
+              >
+                List your business
+              </Link>
+            </>
+          )}
         </div>
 
         <button
@@ -109,20 +134,41 @@ export function SiteHeader() {
               </Link>
             ))}
             <div className="mt-2 flex gap-2 border-t border-border pt-3">
-              <Link
-                to="/login"
-                onClick={() => setOpen(false)}
-                className="flex-1 rounded-lg border border-border px-3 py-2 text-center text-sm font-medium"
-              >
-                Log in
-              </Link>
-              <Link
-                to="/register"
-                onClick={() => setOpen(false)}
-                className="flex-1 rounded-lg bg-brand-gradient px-3 py-2 text-center text-sm font-semibold text-brand-foreground"
-              >
-                List business
-              </Link>
+              {user ? (
+                <>
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setOpen(false)}
+                    className="flex-1 rounded-lg bg-brand-gradient px-3 py-2 text-center text-sm font-semibold text-brand-foreground"
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleSignOut}
+                    className="flex-1 rounded-lg border border-border px-3 py-2 text-center text-sm font-medium"
+                  >
+                    Sign out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/auth"
+                    onClick={() => setOpen(false)}
+                    className="flex-1 rounded-lg border border-border px-3 py-2 text-center text-sm font-medium"
+                  >
+                    Log in
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={() => setOpen(false)}
+                    className="flex-1 rounded-lg bg-brand-gradient px-3 py-2 text-center text-sm font-semibold text-brand-foreground"
+                  >
+                    List business
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
