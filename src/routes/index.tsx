@@ -221,7 +221,7 @@ function Index() {
                     List your business
                   </Link>
                   <Link
-                    to="/login"
+                    to="/auth"
                     className="rounded-full bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/25 transition duration-300 hover:scale-105 hover:bg-white/20 active:scale-95"
                   >
                     Owner login
