@@ -32,7 +32,7 @@ export function SiteFooter() {
           <div className="text-sm font-semibold">For Owners</div>
           <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
             <li><Link to="/register" className="hover:text-foreground">List your business</Link></li>
-            <li><Link to="/login" className="hover:text-foreground">Owner login</Link></li>
+            <li><Link to="/auth" className="hover:text-foreground">Owner login</Link></li>
             <li><Link to="/dashboard" className="hover:text-foreground">Dashboard</Link></li>
             <li><Link to="/admin" className="hover:text-foreground">Admin</Link></li>
           </ul>

@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ShieldCheck, Users, Store, Flag, CheckCircle2, XCircle } from "lucide-react";
 import { businesses } from "@/data/businesses";
 
-export const Route = createFileRoute("/admin")({
+export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
     meta: [
       { title: "Admin — Ethio Spot" },
