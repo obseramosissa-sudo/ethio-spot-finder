@@ -3,6 +3,7 @@ import { LogIn } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { resolvePostAuthDestination } from "@/lib/post-auth-redirect";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -36,12 +37,20 @@ function AuthPage() {
   const [notice, setNotice] = useState<string | null>(null);
 
   useEffect(() => {
+    let done = false;
+    async function go(userId: string) {
+      if (done) return;
+      done = true;
+      const to = await resolvePostAuthDestination(userId);
+      navigate({ to, replace: true });
+    }
+
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard", replace: true });
+      if (data.session) void go(data.session.user.id);
     });
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       if (session && (event === "SIGNED_IN" || event === "INITIAL_SESSION")) {
-        navigate({ to: "/dashboard", replace: true });
+        void go(session.user.id);
       }
     });
     return () => sub.subscription.unsubscribe();
@@ -78,7 +87,7 @@ function AuthPage() {
     setError(null);
     setBusy(true);
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+      redirect_uri: `${window.location.origin}/auth`,
     });
     if (result.error) {
       setError("Google sign-in failed. Please try again.");
@@ -86,7 +95,9 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/dashboard", replace: true });
+    const { data } = await supabase.auth.getUser();
+    const to = data.user ? await resolvePostAuthDestination(data.user.id) : "/dashboard";
+    navigate({ to, replace: true });
   }
 
   return (
