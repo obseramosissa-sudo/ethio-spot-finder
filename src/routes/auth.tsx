@@ -3,6 +3,7 @@ import { LogIn } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { resolvePostAuthDestination } from "@/lib/post-auth-redirect";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
