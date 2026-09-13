@@ -95,7 +95,9 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/dashboard", replace: true });
+    const { data } = await supabase.auth.getUser();
+    const to = data.user ? await resolvePostAuthDestination(data.user.id) : "/dashboard";
+    navigate({ to, replace: true });
   }
 
   return (
