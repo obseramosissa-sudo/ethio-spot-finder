@@ -36,12 +36,20 @@ function AuthPage() {
   const [notice, setNotice] = useState<string | null>(null);
 
   useEffect(() => {
+    let done = false;
+    async function go(userId: string) {
+      if (done) return;
+      done = true;
+      const to = await resolvePostAuthDestination(userId);
+      navigate({ to, replace: true });
+    }
+
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard", replace: true });
+      if (data.session) void go(data.session.user.id);
     });
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       if (session && (event === "SIGNED_IN" || event === "INITIAL_SESSION")) {
-        navigate({ to: "/dashboard", replace: true });
+        void go(session.user.id);
       }
     });
     return () => sub.subscription.unsubscribe();
