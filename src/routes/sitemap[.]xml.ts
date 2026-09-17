@@ -4,8 +4,8 @@ import { businesses, collections } from "@/data/businesses";
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
-      GET: async ({ request }) => {
-        const baseUrl = new URL(request.url).origin;
+      GET: async () => {
+        const baseUrl = "https://ethio-spot-finder.lovable.app";
         const entries = [
           { path: "/", changefreq: "weekly", priority: "1.0" },
           { path: "/directory", changefreq: "daily", priority: "0.9" },
