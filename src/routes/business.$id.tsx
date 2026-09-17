@@ -40,6 +40,10 @@ export const Route = createFileRoute("/business/$id")({
       return { meta: [{ title: "Not found — Ethio Spot" }, { name: "robots", content: "noindex" }] };
     }
     const b = loaderData.business;
+    const url = `https://ethio-spot-finder.lovable.app/business/${b.id}`;
+    const openingHours = b.hours
+      .filter((h: { day: string; time: string }) => h.time !== "Closed")
+      .map((h: { day: string; time: string }) => `${h.day} ${h.time.replace(/[–—]/g, "-").replace(/\s/g, "")}`);
     return {
       meta: [
         { title: `${b.name} — Ethio Spot` },
@@ -47,7 +51,37 @@ export const Route = createFileRoute("/business/$id")({
         { property: "og:title", content: `${b.name} — Ethio Spot` },
         { property: "og:description", content: b.description },
         { property: "og:type", content: "website" },
+        { property: "og:url", content: url },
         { name: "twitter:card", content: "summary_large_image" },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            name: b.name,
+            description: b.description,
+            image: b.image,
+            telephone: b.phone,
+            url,
+            priceRange: "$".repeat(b.priceLevel),
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: b.address,
+              addressLocality: b.city,
+              addressCountry: "ET",
+            },
+            geo: { "@type": "GeoCoordinates", latitude: b.lat, longitude: b.lng },
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: b.rating,
+              reviewCount: b.reviews,
+            },
+            openingHours,
+          }),
+        },
       ],
     };
   },
